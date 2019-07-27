@@ -168,12 +168,13 @@ argparser = argparse.ArgumentParser()
 argparser.add_argument("-c", "--noCropping", required=False, dest='noCropping', action='store_true', help="Disable page contour detection - the program will take image as it is.")
 argparser.add_argument("-m", "--noMarkers", required=False, dest='noMarkers', action='store_true', help="Disable marker detection - if page is already cropped at marker points.")
 argparser.add_argument("-a", "--noAlign", required=False, dest='noAlign', action='store_true', help="Disable automatic template alignment - if columns are not varying significantly(saves computation).")
-argparser.add_argument("-l", "--setLayout", required=False, dest='setLayout', action='store_true', help="Use this option to set up OMR template layout for once.(*_template.json file)")
+argparser.add_argument("-l", "--setLayout", required=False, dest='setLayout', action='store_true', help="Use this option to set up OMR template layout by modifying your '*_template.json' file interactively")
 
-args, unknown = parser.parse_known_args()
+args, unknown = argparser.parse_known_args()
+args = vars(args)
 if(len(unknown)>0):
-    print("Unknown arguments- ",unknown)
-    parser.print_help()
+    print("\nError: Unknown arguments:",unknown)
+    argparser.print_help()
     exit(0)
 
 OUTPUT_SET, respCols, emptyResp, filesObj, filesMap = {}, {}, {}, {}, {}
@@ -270,7 +271,7 @@ for filepath in allOMRs:
         continue
 
     if(args["setLayout"]):
-        show("Sample OMR", resize_util(OMRcrop,TEMPLATES[squad].dims[0],TEMPLATES[squad].dims[1]), 0)
+        # show("Sample OMR", resize_util_h(OMRcrop,display_height), 0) <-- showimglvl 2 does the job
         templateLayout = drawTemplateLayout(OMRcrop, TEMPLATES[squad], shifted=False, border=2)
         show("Template Layout", templateLayout,1,1)
         print('Setup Layout Note: Press Q to continue, Ctrl+C in terminal to exit')
