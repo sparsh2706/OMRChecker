@@ -267,7 +267,7 @@ for filepath in allOMRs:
     if(args["setLayout"]):
         show("Sample OMR", resize_util(OMRcrop,TEMPLATES[squad].dims[0],TEMPLATES[squad].dims[1]), 0)
         templateLayout = drawTemplateLayout(OMRcrop, TEMPLATES[squad], shifted=False, border=2)
-        show("Template Layout", templateLayout)
+        show("Template Layout", templateLayout,1,1)
         print('Setup Layout Note: Press Q to continue, Ctrl+C in terminal to exit')
         continue
     #uniquify
@@ -299,7 +299,7 @@ for filepath in allOMRs:
         # MultiMarked file
         print('[%d] MultiMarked, moving File: %s' % (filesCounter, newfilename))
         newfilepath = multiMarkedDir+squadlang+filename
-        if(move(MULTI_BUBBLE_WARN, filepath, newfilepath)):
+        if(move(MULTI_BUBBLE_ERR, filepath, newfilepath)):
             mm_line = [filename,filepath,newfilepath,"NA"]+respArray
             pd.DataFrame(mm_line, dtype=str).T.to_csv(filesObj[squad]["MultiMarked"], quoting = QUOTE_NONNUMERIC,header=False,index=False)
         # else:

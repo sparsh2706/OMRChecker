@@ -4,8 +4,8 @@
     1500
   ],
   "BubbleDimensions": [
-    25,
-    20
+    40,
+    40
   ],
   "Concatenations": {
     "Roll": ["Squad", "Medium", "roll0", "roll1", "roll2", "roll3", "roll4", "roll5", "roll6", "roll7", "roll8"],
@@ -26,16 +26,16 @@
   "Medium": {
     "qType": "QTYPE_MED",
     "orig": [
-      295,
-      255
+      245,
+      205
     ],
     "bigGaps": [
-      100,
+      11,
       11
     ],
     "gaps": [
       59,
-      20
+      46
     ],
     "qNos": [
       [
@@ -48,16 +48,16 @@
   "Roll": {
     "qType": "QTYPE_ROLL",
     "orig": [
-      402,
-      290
+      300,
+      200
     ],
     "bigGaps": [
       115,
       11
     ],
     "gaps": [
-      46,
-      23
+      58,
+      46
     ],
     "qNos": [
       [
@@ -78,15 +78,15 @@
   "Int1": {
     "qType": "QTYPE_INT",
     "orig": [
-      995,
-      250
+      1015,
+      200
     ],
     "bigGaps": [
-      95,
+      124,
       11
     ],
     "gaps": [
-      50,
+      56,
       46
     ],
     "qNos": [
@@ -113,15 +113,15 @@
   "Int2": {
     "qType": "QTYPE_INT",
     "orig": [
-      995,
-      588
+      1014,
+      912
     ],
     "bigGaps": [
-      95,
+      124,
       11
     ],
     "gaps": [
-      50,
+      60,
       46
     ],
     "qNos": [
@@ -148,16 +148,16 @@
   "Mcq1": {
     "qType": "QTYPE_MCQ4",
     "orig": [
-      118,
-      857
+      190,
+      840
     ],
     "bigGaps": [
-      115,
-      183
+      11,
+      11
     ],
     "gaps": [
-      59,
-      53
+      76,
+      62
     ],
     "qNos": [
       [
@@ -174,16 +174,16 @@
   "Mcq2": {
     "qType": "QTYPE_MCQ4",
     "orig": [
-      905,
-      860
+      596,
+      838
     ],
     "bigGaps": [
       115,
-      180
+      178
     ],
     "gaps": [
-      59,
-      53
+      76,
+      62
     ],
     "qNos": [
       [
