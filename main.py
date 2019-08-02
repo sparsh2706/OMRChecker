@@ -305,7 +305,7 @@ for filepath in allOMRs:
         # MultiMarked file
         print('[%d] MultiMarked, moving File: %s' % (filesCounter, newfilename))
         newfilepath = multiMarkedDir+squadlang+filename
-        if(move(MULTI_BUBBLE_WARN, filepath, newfilepath)):
+        if(move(MULTI_BUBBLE_ERR, filepath, newfilepath)):
             mm_line = [filename,filepath,newfilepath,"NA"]+respArray
             pd.DataFrame(mm_line, dtype=str).T.to_csv(filesObj[squad]["MultiMarked"], quoting = QUOTE_NONNUMERIC,header=False,index=False)
         # else:
