@@ -60,7 +60,7 @@ for _dir in [multiMarkedDir,errorsDir,badRollsDir]:
 # In[64]:
 def waitQ():
     ESC_KEY = 27
-    while(cv2.waitKey(1)& 0xFF not in [ord('q'), ESC_KEY]):pass
+    while(cv2.waitKey(1) & 0xFF not in [ord('q'), ESC_KEY]):pass
     cv2.destroyAllWindows()
 
 def normalize_util(img, alpha=0, beta=255):
@@ -122,7 +122,7 @@ def show(name,orig,pause=1,resize=False,resetpos=None):
     h,w = img.shape[:2]
     
     # Set next window position
-    margin = 75
+    margin = 25
     w += margin
     h += margin
     if(windowX+w > windowWidth):
@@ -881,7 +881,7 @@ def readResponse(squad,image,name,savedir=None,noAlign=False):
         # show("StdHist", hist, 0, 1)
         
         #Note: Plotting takes Significant times here --> Change Plotting args to support showimglvl
-        globalTHR, j_low, j_high = getGlobalThreshold(allQVals)#, "Mean Intensity Histogram", plotShow=False, sortInPlot=True)
+        globalTHR, j_low, j_high = getGlobalThreshold(allQVals)#, "Mean Intensity Histogram", plotShow=True, sortInPlot=True)
         
         # TODO colorama
         print("Thresholding:\t globalTHR: ",round(globalTHR,2),"\tglobalStdTHR: ",round(globalStdTHR,2),"\t(Looks like a Xeroxed OMR)" if(globalTHR == 255) else "")
@@ -915,7 +915,7 @@ def readResponse(squad,image,name,savedir=None,noAlign=False):
                     globalTHR, noOutliers, 
                     "Mean Intensity Histogram for "+ key +"."+ qBoxPts[0].qNo, 
                     # None,
-                    # "q5" in (qBoxPts[0].qNo) or 
+                    # "q1" == (qBoxPts[0].qNo) or 
                     showimglvl>=6)
                 # print(qBoxPts[0].qNo,key,blockQStripNo, "THR: ",round(perQStripThreshold,2))
                 perOMRThresholdAvg += perQStripThreshold

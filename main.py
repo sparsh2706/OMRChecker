@@ -290,6 +290,7 @@ for filepath in allOMRs:
     respArray=[]
     for k in respCols[squad]:
         respArray.append(resp[k])
+        
     OUTPUT_SET[squad].append([filename]+respArray)
     # if((multiroll or not (resp['Roll'] is not None and len(resp['Roll'])==11))):
     if(MultiMarked == 0):
