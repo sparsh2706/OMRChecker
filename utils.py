@@ -716,7 +716,7 @@ def saveImg(path, final_marked):
     print('Saving Image to '+path)
     cv2.imwrite(path,final_marked)
 
-def readResponse(squad,image,name,savedir=None,noAlign=False):
+def readResponse(squad,squadlang,image,name,savedir=None,noAlign=False):
     global clahe
     TEMPLATE = TEMPLATES[squad]
     try:
@@ -1012,8 +1012,10 @@ def readResponse(squad,image,name,savedir=None,noAlign=False):
         
         # TODO: refactor "type(savedir) != type(None) "
         if (saveMarked and type(savedir) != type(None) ):
-            if(multiroll):
-                savedir = savedir+'_MULTI_/'
+            # if(multiroll):
+                # savedir = savedir+'_MULTI_/'
+            if(multimarked or multiroll):
+                savedir = multiMarkedDir+squadlang
             saveImg(savedir+name, final_marked)
 
         if(showimglvl>=1):

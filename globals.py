@@ -15,7 +15,7 @@ windowWidth = 1280
 windowHeight = 720
 
 saveMarked = 1
-showimglvl = 2
+showimglvl = 0
 saveimglvl = 0
 PRELIM_CHECKS=0
 saveImgList = {}

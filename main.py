@@ -252,13 +252,13 @@ if(PRELIM_CHECKS):
     # TODO: add more using unit testing
     TEMPLATE = TEMPLATES["H"]
     ALL_WHITE = 255 * np.ones((TEMPLATE.dims[1],TEMPLATE.dims[0]), dtype='uint8')
-    OMRresponseDict,final_marked,MultiMarked,multiroll = readResponse("H",ALL_WHITE,name = "ALL_WHITE", savedir = None, noAlign=True)
+    OMRresponseDict,final_marked,MultiMarked,multiroll = readResponse("H","HE/",ALL_WHITE,name = "ALL_WHITE", savedir = None, noAlign=True)
     print("ALL_WHITE",OMRresponseDict)
     if(OMRresponseDict!={}):
         print("Preliminary Checks Failed.")
         exit(0)
     ALL_BLACK = np.zeros((TEMPLATE.dims[1],TEMPLATE.dims[0]), dtype='uint8')
-    OMRresponseDict,final_marked,MultiMarked,multiroll = readResponse("H",ALL_BLACK,name = "ALL_BLACK", savedir = None, noAlign=True)
+    OMRresponseDict,final_marked,MultiMarked,multiroll = readResponse("H","HE/",ALL_BLACK,name = "ALL_BLACK", savedir = None, noAlign=True)
     print("ALL_BLACK",OMRresponseDict)
     show("Confirm : All bubbles are black",final_marked,1,1)
 
@@ -278,7 +278,12 @@ for filepath in allOMRs:
     if(finder):
         inputFolderName, squadlang, filename = finder.groups()
         #FIXME : SEE FOR HINDI ISSUES
+        squadlang = squadlang.upper()
+        if(squadlang[1] != 'H'):
+            squadlang = squadlang[:1] + 'E' + squadlang[2:]
+
         squad,lang = squadlang[0],squadlang[1]
+        squadlang = squad+lang
         squadlang = squadlang+"/"
     else:
         filename = 'dummyFile'+str(filesCounter)
@@ -299,7 +304,8 @@ for filepath in allOMRs:
     # show("inOMR",inOMR,1,1)
     OMRcrop = getROI(inOMR,filename, noCropping=args["noCropping"], noMarkers=args["noMarkers"])
     if(OMRcrop is None):
-        newfilepath = errorsDir+squadlang+filename
+        newfilename = inputFolderName + '_' + filename
+        newfilepath = errorsDir+squadlang+newfilename
         OUTPUT_SET[squad].append([filename]+emptyResp[squad])
         if(move(NO_MARKER_ERR, filepath, newfilepath)):
             err_line = [filename,filepath,newfilepath,"NA"]+emptyResp[squad]
@@ -315,8 +321,7 @@ for filepath in allOMRs:
     #uniquify
     newfilename = inputFolderName + '_' + filename
     savedir = saveMarkedDir+squadlang
-    OMRresponseDict,final_marked,MultiMarked,multiroll = readResponse(squad,OMRcrop,name = newfilename, savedir = savedir, noAlign=args["noAlign"])
-
+    OMRresponseDict,final_marked,MultiMarked,multiroll = readResponse(squad,squadlang,OMRcrop,name = newfilename, savedir = savedir, noAlign=args["noAlign"])
     #convert to ABCD, getRoll,etc
     resp = processOMR(squad,OMRresponseDict)
     print("Read Response: \t", resp)
@@ -341,7 +346,7 @@ for filepath in allOMRs:
     else:
         # MultiMarked file
         print('[%d] MultiMarked, moving File: %s' % (filesCounter, newfilename))
-        newfilepath = multiMarkedDir+squadlang+filename
+        newfilepath = multiMarkedDir+squadlang+newfilename
         if(move(MULTI_BUBBLE_WARN, filepath, newfilepath)):
             mm_line = [filename,filepath,newfilepath,"NA"]+respArray
             pd.DataFrame(mm_line, dtype=str).T.to_csv(filesObj[squad]["MultiMarked"], quoting = QUOTE_NONNUMERIC,header=False,index=False)
@@ -357,7 +362,7 @@ for filepath in allOMRs:
         for squad in templJSON.keys():
             for fileKey in filesMap[squad].keys():
                 filesObj[squad][fileKey].flush()
-        break
+        # break
 # x = x.sort_values(by=['score','num_correct','num_wrong'],ascending=False)
 # x.to_sql('test.sql','SQLAlchemy')
 
