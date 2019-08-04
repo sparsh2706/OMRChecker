@@ -5,6 +5,7 @@
 **/gitignore
 **/ignore
 **/outputs
+/.DS_Store
 inputs/*
 !inputs/samples/
 inputs/OMR_Files/

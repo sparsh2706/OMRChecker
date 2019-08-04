@@ -219,7 +219,7 @@ Here's a sneak peak of the [Android OMR Helper App(WIP)](https://github.com/Uday
 </p>
 
 ## Activity: 
-[![Chat](https://img.shields.io/badge/Join-on_Discord-purple.svg?style=flat-square)](https://discord.gg/qFv2Vqf)
+Discord Group: [![Chat](https://img.shields.io/badge/Join-on_Discord-purple.svg?style=flat-square)](https://discord.gg/qFv2Vqf)
 [![Ask me](https://img.shields.io/badge/Ask_me-anything-purple.svg?style=flat-square)](https://github.com/Udayraj123/OMRChecker/issues/5)
 
 [![HitCount](http://hits.dwyl.io/udayraj123/OMRchecker.svg)](http://hits.dwyl.io/udayraj123/OMRchecker)

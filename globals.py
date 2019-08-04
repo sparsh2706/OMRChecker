@@ -36,7 +36,8 @@ ERODE_SUB_OFF = 1
 # For new ways of determining threshold
 MIN_GAP, MIN_STD = 30, 25
 MIN_JUMP = 20
-CONFIDENT_JUMP = 25
+# If only not confident, take help of globalTHR
+CONFIDENT_JUMP = MIN_JUMP+15
 JUMP_DELTA = 40
 # MIN_GAP : worst case gap of black and gray
 
