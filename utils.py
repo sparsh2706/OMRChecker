@@ -576,6 +576,7 @@ def getGlobalThreshold(QVals_orig, plotTitle=None, plotShow=True, sortInPlot=Tru
             max1 = jump
             thr1 = QVals[i-1] + jump/2
 
+# NOTE: thr2 is deprecated, thus is JUMP_DELTA
     # Make use of the fact that the JUMP_DELTA(Vertical gap ofc) between values at detected jumps would be atleast 20
     max2,thr2=MIN_JUMP,255
     # Requires atleast 1 gray box to be present (Roll field will ensure this)
@@ -677,7 +678,7 @@ def getLocalThreshold(qNo, QVals, globalTHR, noOutliers, plotTitle=None, plotSho
             thr1 = globalTHR     
 
         if(thr1 == 255):
-            print("Warning: threshold is unexpectedly 255!")
+            print("Warning: threshold is unexpectedly 255! (Outlier Delta issue?)",plotTitle)
 
     if(plotShow and plotTitle is not None):    
         f, ax = plt.subplots()
@@ -873,7 +874,7 @@ def readResponse(squad,image,name,savedir=None,noAlign=False):
                 totalQStripNo+=1
             allQStdVals.extend(QStdVals)
         # print("Begin getGlobalThresholdStd")
-        globalStdTHR, jstd_low, jstd_high = getGlobalThreshold(allQStdVals)#, "Q-wise Std-dev Plot", plotShow=False, sortInPlot=True)
+        globalStdTHR, jstd_low, jstd_high = getGlobalThreshold(allQStdVals)#, "Q-wise Std-dev Plot", plotShow=True, sortInPlot=True)
         # print("End getGlobalThresholdStd")
         # print("Begin getGlobalThreshold")
         # plt.show()
@@ -913,9 +914,9 @@ def readResponse(squad,image,name,savedir=None,noAlign=False):
                 # print(totalQStripNo, qBoxPts[0].qNo, allQStdVals[totalQStripNo], "noOutliers:", noOutliers)
                 perQStripThreshold = getLocalThreshold(qBoxPts[0].qNo, allQStripArrs[totalQStripNo], 
                     globalTHR, noOutliers, 
-                    "Mean Intensity Histogram for "+ key +"."+ qBoxPts[0].qNo, 
+                    "Mean Intensity Histogram for "+ key +"."+ qBoxPts[0].qNo+'.'+str(blockQStripNo), 
                     # None,
-                    # "q1" == (qBoxPts[0].qNo) or 
+                    # "q15.1" in (qBoxPts[0].qNo+'.'+str(blockQStripNo)) or 
                     showimglvl>=6)
                 # print(qBoxPts[0].qNo,key,blockQStripNo, "THR: ",round(perQStripThreshold,2))
                 perOMRThresholdAvg += perQStripThreshold
