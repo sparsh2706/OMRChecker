@@ -99,6 +99,7 @@ def evaluate(resp,squad,explain=False):
             lastQ = sectionques[len(sectionques)-1]
             unmarked = marked=='X' or marked==''
             bonus = 'BONUS' in ans
+            special = 'GOD' in ans
             correct = bonus or (marked in ans)
             inrange=0
 
@@ -127,8 +128,12 @@ def evaluate(resp,squad,explain=False):
             elif('Proxy' in scheme):
                 a=int(ans[0])
                 #proximity check
-                inrange = 1 if unmarked else (float(abs(int(marked) - a))/float(a) <= 0.25)
-                currmarks = section['+marks'] if correct else (0 if inrange else -section['-marks'])
+                if(abs(int(marked) - a) == 1):
+                    currmarks = section['marks'][1]
+                elif(abs(int(marked) - a) == 0):
+                    currmarks = section['marks'][0]
+                else:
+                    currmarks = section['marks'][2]
 
             elif('Fibo' in scheme or 'Power' in scheme or 'Boom' in scheme):
                 currmarks = section['+seq'][streak] if correct else (0 if unmarked else -section['-seq'][streak])
@@ -136,8 +141,16 @@ def evaluate(resp,squad,explain=False):
                 currmarks = 0
             else:
                 print('Invalid Sections')
-            prevmarks=marks
+            prevmarks = marks
             marks += currmarks
+
+            if (special && correct && 'Power1' not in scheme):
+                marks *= 2
+            elif(special && !correct && 'Power1' not in scheme):
+                marks /= 2
+            elif(special && correct && 'Power1' in scheme):
+                if(streak == 0)
+
 
             if(explain):
                 if bonus:
@@ -155,9 +168,32 @@ def evaluate(resp,squad,explain=False):
 
     return marks
 
+def checkInput(OMR_INPUT_DIR):
+    """ Checks Correct Directory Structure """
+    flag = 0 
+
+    for folders in list(glob.iglob(OMR_INPUT_DIR + '*/*/')):
+        
+        val = folders.count("/")
+        if(val != 4):
+            print("Check the Directory Structure\n")
+            print(folders)
+            flag = 1
+                    
+        sub_name = folders.split("/")[3]
+        print(type(sub_name[0]))
+        if(sub_name[0] != "J" and sub_name[0] != "H" and sub_name[0] != "h" and sub_name[0] != "j"):
+            print(folders)
+            flag = 1
+
+    if flag == 1:
+        input("Ctrl + C Plz...")
+
+
 # os.sep is not an issue here in iglob (handled internally)
 allOMRs = list(glob.iglob(OMR_INPUT_DIR+'*/*/*.jpg')) + list(glob.iglob(OMR_INPUT_DIR+'*/*/*.png'))
-
+checkInput(OMR_INPUT_DIR)
+input()
 timeNowHrs=strftime("%I%p",localtime())
 start_time = int(time())
 
@@ -290,6 +326,7 @@ for filepath in allOMRs:
     respArray=[]
     for k in respCols[squad]:
         respArray.append(resp[k])
+        
     OUTPUT_SET[squad].append([filename]+respArray)
     # if((multiroll or not (resp['Roll'] is not None and len(resp['Roll'])==11))):
     if(MultiMarked == 0):
@@ -305,7 +342,7 @@ for filepath in allOMRs:
         # MultiMarked file
         print('[%d] MultiMarked, moving File: %s' % (filesCounter, newfilename))
         newfilepath = multiMarkedDir+squadlang+filename
-        if(move(MULTI_BUBBLE_ERR, filepath, newfilepath)):
+        if(move(MULTI_BUBBLE_WARN, filepath, newfilepath)):
             mm_line = [filename,filepath,newfilepath,"NA"]+respArray
             pd.DataFrame(mm_line, dtype=str).T.to_csv(filesObj[squad]["MultiMarked"], quoting = QUOTE_NONNUMERIC,header=False,index=False)
         # else:
