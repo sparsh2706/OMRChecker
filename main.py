@@ -100,6 +100,7 @@ def evaluate(resp,squad,explain=False):
             unmarked = marked=='X' or marked==''
             bonus = 'BONUS' in ans
             special = 'GOD' in ans
+            power_special = 'GODPOWER' in ans
             correct = bonus or (marked in ans)
             inrange=0
 
@@ -128,10 +129,14 @@ def evaluate(resp,squad,explain=False):
             elif('Proxy' in scheme):
                 a=int(ans[0])
                 #proximity check
-                if(abs(int(marked) - a) == 1):
-                    currmarks = section['marks'][1]
-                elif(abs(int(marked) - a) == 0):
-                    currmarks = section['marks'][0]
+
+                if(isinstance(marked,int)):
+                    if(abs(int(float(marked)) - a) == 1):
+                        currmarks = section['marks'][1]
+                    elif(abs(int(float(marked)) - a) == 0):
+                        currmarks = section['marks'][0]
+                    else:
+                        currmarks = section['marks'][2]
                 else:
                     currmarks = section['marks'][2]
 
@@ -144,12 +149,17 @@ def evaluate(resp,squad,explain=False):
             prevmarks = marks
             marks += currmarks
 
-            if (special && correct && 'Power1' not in scheme):
+            if (special and correct and 'Power1' not in scheme):
                 marks *= 2
-            elif(special && !correct && 'Power1' not in scheme):
+            elif(special and (not correct) and 'Power1' not in scheme):
                 marks /= 2
-            elif(special && correct && 'Power1' in scheme):
-                if(streak == 0)
+            elif(power_special and correct and 'Power1' in scheme):
+                if(streak == 1):
+                    marks+=1
+                elif(streak == 2):
+                    marks+=6
+                elif(streak == 3):
+                    marks+=25
 
 
             if(explain):
@@ -181,19 +191,48 @@ def checkInput(OMR_INPUT_DIR):
             flag = 1
                     
         sub_name = folders.split("/")[3]
-        print(type(sub_name[0]))
         if(sub_name[0] != "J" and sub_name[0] != "H" and sub_name[0] != "h" and sub_name[0] != "j"):
             print(folders)
             flag = 1
 
     if flag == 1:
         input("Ctrl + C Plz...")
+    print("Directory Looks Good")
 
+    flag = 0
+    print("Checking the Count of Sub-Folders")
+
+    for folder in list(glob.iglob(OMR_INPUT_DIR + '*/')):
+        sub_folder = glob.glob(folder + "/*")
+        if(len(sub_folder) > 2 or len(sub_folder) <= 0):
+            print(folder)
+            flag = 1
+
+    if(flag):
+        input("Ctrl + C Plz...")
+
+    print("Count of Sub-Folder is Cool too!")
+
+    flag = 0
+    print("Checking PDF")
+
+    omr_files = list(glob.iglob(OMR_INPUT_DIR + '*/*/*.pdf'))
+    if(len(omr_files) == 0):
+        print("Awesome!")
+        return
+
+    for file_val in omr_files:
+        print(file_val)
+        flag = 1
+
+    if(flag):
+        input("Ctrl + C Plz...")
 
 # os.sep is not an issue here in iglob (handled internally)
 allOMRs = list(glob.iglob(OMR_INPUT_DIR+'*/*/*.jpg')) + list(glob.iglob(OMR_INPUT_DIR+'*/*/*.png'))
 checkInput(OMR_INPUT_DIR)
-input()
+print("OMRS goiing to be processed: " + str(len(allOMRs)))
+input("Everything looks Good. Showtime!")
 timeNowHrs=strftime("%I%p",localtime())
 start_time = int(time())
 
